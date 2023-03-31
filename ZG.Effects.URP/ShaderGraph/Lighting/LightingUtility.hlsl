@@ -8,7 +8,11 @@
     #endif
 #endif
 
-void GetMainLightData_half(float3 positionWS, out half3 direction, out half3 color)
+void GetMainLightData_half(
+    float3 positionWS, 
+    out half3 direction, 
+    out half3 color, 
+    out half shadowAttenuation)
 {
 #if defined(UNIVERSAL_LIGHTING_INCLUDED)
 
@@ -26,7 +30,8 @@ void GetMainLightData_half(float3 positionWS, out half3 direction, out half3 col
     //mainLight.shadowAttenuation = MainLightRealtimeShadow(shadowCoord);
 
     direction = mainLight.direction;
-    color = mainLight.color * (mainLight.distanceAttenuation * mainLight.shadowAttenuation);
+    color = mainLight.color * mainLight.distanceAttenuation;
+    shadowAttenuation = mainLight.shadowAttenuation;
 
 #elif defined(HD_LIGHTING_INCLUDED) 
     // ToDo: make it work for HDRP (check define above)
@@ -40,6 +45,7 @@ void GetMainLightData_half(float3 positionWS, out half3 direction, out half3 col
 #else
     direction = half3(-0.3, -0.8, 0.6);
     color = half3(1, 0, 0);
+    shadowAttenuation = 1.0f;
 #endif
 }
 
