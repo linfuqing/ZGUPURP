@@ -816,7 +816,7 @@
     "m_Group": {
         "m_Id": ""
     },
-    "m_Name": "Toon",
+    "m_Name": "ToonLit",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -1803,7 +1803,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "c6d2cb9e6fa84fa3bdebc88a9e3151c8",
     "m_Id": 0,
-    "m_DisplayName": "BaseTexture",
+    "m_DisplayName": "BaseMap",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -1917,11 +1917,11 @@
     "m_Guid": {
         "m_GuidSerialized": "a6cd3c80-b6bd-443c-b9d3-e38c1748dfb4"
     },
-    "m_Name": "BaseTexture",
+    "m_Name": "BaseMap",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "BaseTexture",
-    "m_DefaultReferenceName": "_BaseTexture",
-    "m_OverrideReferenceName": "_Texture",
+    "m_RefNameGeneratedByDisplayName": "BaseMap",
+    "m_DefaultReferenceName": "_BaseMap",
+    "m_OverrideReferenceName": "_BaseMap",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
