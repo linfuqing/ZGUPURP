@@ -55,6 +55,7 @@ namespace ZG
             {
                 var descriptor = cameraTextureDescriptor;
                 descriptor.depthBufferBits = 0; // Color and depth cannot be combined in RTHandles
+                descriptor.colorFormat = RenderTextureFormat.ARGB32;
                 RenderingUtils.ReAllocateIfNeeded(ref __solidSilhouette, descriptor, name: "Solid Silhouette");
 
                 //cmd.GetTemporaryRT(SolidSilhouette, cameraTextureDescriptor);
@@ -231,9 +232,10 @@ namespace ZG
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
             var renderBlurOutline = renderingData.cameraData.camera.GetComponent<RenderBlurOutline>();
+            if (renderBlurOutline == null || renderBlurOutline.silhouetteCount < 1)
+                return;
 
-            var silhouettes = renderBlurOutline == null ? null : renderBlurOutline.silhouettes;
-            if (silhouettes == null || renderBlurOutline.silhouetteCount < 1)
+            if (!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGB32))
                 return;
 
             __renderPass.Init(renderBlurOutline);

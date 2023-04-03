@@ -108,7 +108,9 @@ Shader "ZG/BlurOutlineURP"
         {
             Name "Blur Outline-Final"
             BlendOp Add
-            Blend One One
+            //Blend One One
+            //Blend SrcAlpha OneMinusSrcAlpha
+            Blend One OneMinusSrcAlpha
 
             HLSLPROGRAM
                 #pragma vertex Vert//FullscreenVert
