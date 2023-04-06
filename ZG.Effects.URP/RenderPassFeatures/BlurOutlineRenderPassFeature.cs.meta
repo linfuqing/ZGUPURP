@@ -3,7 +3,12 @@ guid: d24d8552b4876604aa20ad9bd351dac6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - solidColor: {fileID: 4800000, guid: 86e72b6b9f5afaa458a18c8ded7132d9, type: 3}
+  - solidColorLinearBlendSkinning: {fileID: 4800000, guid: 2b963955402649541b7ea045efb73647,
+      type: 3}
+  - solidColorComputeDeformation: {fileID: 4800000, guid: a24931cb8a8d7fb4e9fbba5a28fb3623,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

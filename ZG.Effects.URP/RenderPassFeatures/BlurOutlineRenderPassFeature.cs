@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -8,16 +9,6 @@ namespace ZG
     {
         private class RenderPass : ScriptableRenderPass
         {
-            public static readonly string[] SolidShaderResourceNames =
-            {
-                "ZG/SolidColor",
-                "ZG/SolidColorLinearBlendSkinning",
-                "ZG/SolidColorComputeDeformation"
-            };
-
-            public static readonly int SkinMatrixIndex = Shader.PropertyToID("_SkinMatrixIndex");
-            public static readonly int ComputeMeshIndex = Shader.PropertyToID("_ComputeMeshIndex");
-            public static readonly int SolidColor = Shader.PropertyToID("_SolidColor");
             public static readonly int BlurOffsetX = Shader.PropertyToID("_BlurOffsetX");
             public static readonly int BlurOffsetY = Shader.PropertyToID("_BlurOffsetY");
             public static readonly int Strength = Shader.PropertyToID("_Strength");
@@ -27,23 +18,36 @@ namespace ZG
             public static readonly int BlurSilhouette = Shader.PropertyToID("BlurSilhouette");
             public static readonly int BlurOutline = Shader.PropertyToID("BlurOutline");*/
 
+            private static readonly ProfilingSampler ProfilingSampler = new ProfilingSampler("Blur Outline");
+
             private RTHandle __solidSilhouette;
             private RTHandle __blurSilhouette;
             private RTHandle __blurOutline;
 
-            private RenderBlurOutline __renderBlurOutline;
-            private Material[] __silhouetteMaterials;
+            private IRenderBlurOutline __renderBlurOutline;
             private Material __blurOutlineMaterial;
-            private ProfilingSampler __profilingSampler = new ProfilingSampler("Blur Outline");
+            private Material[] __silhouetteMaterials;
+            private List<ShaderTagId> __shaderTagIds = new List<ShaderTagId>(4);
 
-            public void Init(RenderBlurOutline renderBlurOutline)
+            public RenderPass(params Shader[] silhouetteShaders)
+            {
+                int numSilhouettes = silhouetteShaders.Length;
+
+                __silhouetteMaterials = new Material[numSilhouettes];
+                for (int i = 0; i < numSilhouettes; ++i)
+                    __silhouetteMaterials[i] = new Material(silhouetteShaders[i]);
+
+                __shaderTagIds.Add(new ShaderTagId("SRPDefaultUnlit"));
+                __shaderTagIds.Add(new ShaderTagId("UniversalForward"));
+                __shaderTagIds.Add(new ShaderTagId("UniversalForwardOnly"));
+                __shaderTagIds.Add(new ShaderTagId("LightweightForward"));
+            }
+
+            public void Init(IRenderBlurOutline renderBlurOutline)
             {
                 //ConfigureInput(ScriptableRenderPassInput.Color);
 
                 __renderBlurOutline = renderBlurOutline;
-
-                if (__renderBlurOutline != null)
-                    __renderBlurOutline.enabled = false;
             }
 
             // This method is called before executing the render pass.
@@ -60,7 +64,7 @@ namespace ZG
 
                 //cmd.GetTemporaryRT(SolidSilhouette, cameraTextureDescriptor);
 
-                int downSample = __renderBlurOutline.downSample;
+                int downSample = __renderBlurOutline.data.downSample;
                 descriptor.width >>= downSample;
                 descriptor.height >>= downSample;
                 //int width = cameraTextureDescriptor.width >> __renderBlurOutline.downSample, height = cameraTextureDescriptor.height >> __renderBlurOutline.downSample;
@@ -89,70 +93,37 @@ namespace ZG
             // You don't have to call ScriptableRenderContext.submit, the render pipeline will call it at specific points in the pipeline.
             public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
             {
-                var silhouettes = __renderBlurOutline.silhouettes;
-
                 var cmd = CommandBufferPool.Get();
-                using (new ProfilingScope(cmd, __profilingSampler))
+                using (new ProfilingScope(cmd, ProfilingSampler))
                 {
                     /*cmd.SetRenderTarget(__solidSilhouette);
 
                     cmd.ClearRenderTarget(true, true, Color.clear);*/
 
-                    if (__silhouetteMaterials == null)
-                        __silhouetteMaterials = new Material[SolidShaderResourceNames.Length];
+                    var drawingSettings = CreateDrawingSettings(__shaderTagIds, ref renderingData, renderingData.cameraData.defaultOpaqueSortFlags);
 
-                    int offset;
-                    RenderBlurOutline.SilhouetteType silhouetteType;
-                    RenderBlurOutline.ISilhouette silhouette;
-                    Material material;
-                    Shader shader;
-                    foreach (var pair in silhouettes)
-                    {
-                        silhouette = pair.Value;
-                        if (!silhouette.GetTypeAndOffset(out silhouetteType, out offset))
-                            continue;
+                    __renderBlurOutline.Draw(
+                        __silhouetteMaterials, 
+                        cmd, 
+                        ref context, 
+                        ref renderingData.cullResults, 
+                        ref drawingSettings);
 
-                        material = __silhouetteMaterials[(int)silhouetteType];
-                        if(material == null)
-                        {
-                            shader = Shader.Find(SolidShaderResourceNames[(int)silhouetteType]);
-
-                            material = shader == null ? null : new Material(shader);
-
-                            __silhouetteMaterials[(int)silhouetteType] = material;
-                        }
-
-                        if (material == null)
-                            continue;
-
-                        switch(silhouetteType)
-                        {
-                            case RenderBlurOutline.SilhouetteType.LinearBlendSkinning:
-                                cmd.SetGlobalInt(SkinMatrixIndex, offset);
-                                break;
-                            case RenderBlurOutline.SilhouetteType.ComputeDeformation:
-                                cmd.SetGlobalInt(ComputeMeshIndex, offset);
-                                break;
-                        }
-
-                        cmd.SetGlobalColor(SolidColor, silhouette.color);
-
-                        silhouette.Draw(cmd, material);
-                    }
+                    var data = __renderBlurOutline.data;
 
                     if (__blurOutlineMaterial == null)
                         __blurOutlineMaterial = new Material(Shader.Find("ZG/BlurOutlineURP"));
 
                     Blit(cmd, __solidSilhouette, __blurSilhouette, __blurOutlineMaterial, 0);
 
-                    for (int i = 0; i < __renderBlurOutline.blurIterCount; ++i)
+                    for (int i = 0; i < data.blurIterCount; ++i)
                     {
                         cmd.SetGlobalFloat(BlurOffsetX, 0.0f);
-                        cmd.SetGlobalFloat(BlurOffsetY, __renderBlurOutline.blurScale.y);
+                        cmd.SetGlobalFloat(BlurOffsetY, data.blurScale.y);
 
                         Blit(cmd, __blurSilhouette, __blurOutline, __blurOutlineMaterial, 1);
 
-                        cmd.SetGlobalFloat(BlurOffsetX, __renderBlurOutline.blurScale.x);
+                        cmd.SetGlobalFloat(BlurOffsetX, data.blurScale.x);
                         cmd.SetGlobalFloat(BlurOffsetY, 0.0f);
 
                         Blit(cmd, __blurOutline, __blurSilhouette, __blurOutlineMaterial, 1);
@@ -161,7 +132,7 @@ namespace ZG
                     cmd.SetGlobalTexture(BlurTex, __blurSilhouette);
                     Blit(cmd, __solidSilhouette, __blurOutline, __blurOutlineMaterial, 2);
 
-                    cmd.SetGlobalFloat(Strength, __renderBlurOutline.strength);
+                    cmd.SetGlobalFloat(Strength, data.strength);
                     Blit(cmd, __blurOutline, renderingData.cameraData.renderer.cameraColorTargetHandle, __blurOutlineMaterial, 3);
 
                     //Blit(cmd, renderingData.cameraData.renderer.cameraColorTarget, SolidSilhouette, __blurOutlineMaterial, 0);
@@ -215,13 +186,17 @@ namespace ZG
             }*/
         }
 
+        public Shader solidColor;
+        public Shader solidColorLinearBlendSkinning;
+        public Shader solidColorComputeDeformation;
+
         private RenderPass __renderPass;
 
         /// <inheritdoc/>
         public override void Create()
         {
             if(__renderPass == null)
-                __renderPass = new RenderPass();
+                __renderPass = new RenderPass(solidColor/*, solidColorLinearBlendSkinning, solidColorComputeDeformation*/);
 
             // Configures where the render pass should be injected.
             __renderPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
@@ -231,8 +206,8 @@ namespace ZG
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            var renderBlurOutline = renderingData.cameraData.camera.GetComponent<RenderBlurOutline>();
-            if (renderBlurOutline == null || renderBlurOutline.silhouetteCount < 1)
+            var renderBlurOutline = IRenderBlurOutline.instance;
+            if (renderBlurOutline == null || !renderBlurOutline.isVail)
                 return;
 
             if (!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGB32))
