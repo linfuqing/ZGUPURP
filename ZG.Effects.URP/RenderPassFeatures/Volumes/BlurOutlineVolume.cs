@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.Rendering;
-using static ZG.RenderBlurOutline;
 
 namespace ZG
 {
     public class BlurOutlineVolume : VolumeComponent, IRenderBlurOutline
     {
         public static readonly int SolidColor = Shader.PropertyToID("_SolidColor");
+
+        public BoolParameter depthSort = new BoolParameter(true);
 
         public LayerMaskParameter layerMask = new LayerMaskParameter(~0);
 
@@ -18,6 +19,8 @@ namespace ZG
         public Vector2Parameter blurScale = new Vector2Parameter(Vector2.one);
 
         public bool isVail => active;
+
+        public bool needDepthSort => depthSort.value;
 
         public RenderBlurOutlineData data
         {

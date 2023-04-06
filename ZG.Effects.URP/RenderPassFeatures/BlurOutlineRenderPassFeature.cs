@@ -55,7 +55,7 @@ namespace ZG
             // When empty this render pass will render to the active camera render target.
             // You should never call CommandBuffer.SetRenderTarget. Instead call <c>ConfigureTarget</c> and <c>ConfigureClear</c>.
             // The render pipeline will ensure target setup and clearing happens in an performance manner.
-            public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
+            /*public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
             {
                 var descriptor = cameraTextureDescriptor;
                 descriptor.depthBufferBits = 0; // Color and depth cannot be combined in RTHandles
@@ -75,17 +75,44 @@ namespace ZG
 
                 ConfigureTarget(__solidSilhouette);
                 ConfigureClear(ClearFlag.All, Color.clear); 
-            }
+            }*/
 
             // This method is called before executing the render pass.
             // It can be used to configure render targets and their clear state. Also to create temporary render target textures.
             // When empty this render pass will render to the active camera render target.
             // You should never call CommandBuffer.SetRenderTarget. Instead call <c>ConfigureTarget</c> and <c>ConfigureClear</c>.
             // The render pipeline will ensure target setup and clearing happens in a performant manner.
-            /*public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+            public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
             {
-                ConfigureTarget(renderingData.cameraData.renderer.cameraColorTargetHandle);
-            }*/
+                var descriptor = renderingData.cameraData.cameraTargetDescriptor;
+                descriptor.depthBufferBits = 0; // Color and depth cannot be combined in RTHandles
+                descriptor.colorFormat = RenderTextureFormat.ARGB32;
+                RenderingUtils.ReAllocateIfNeeded(ref __solidSilhouette, descriptor, name: "Solid Silhouette");
+
+                //cmd.GetTemporaryRT(SolidSilhouette, cameraTextureDescriptor);
+
+                int downSample = __renderBlurOutline.data.downSample;
+                descriptor.width >>= downSample;
+                descriptor.height >>= downSample;
+                //int width = cameraTextureDescriptor.width >> __renderBlurOutline.downSample, height = cameraTextureDescriptor.height >> __renderBlurOutline.downSample;
+                RenderingUtils.ReAllocateIfNeeded(ref __blurSilhouette, descriptor, name: "Blur Silhouette");
+                RenderingUtils.ReAllocateIfNeeded(ref __blurOutline, descriptor, name: "Blur Outline");
+                //cmd.GetTemporaryRT(BlurSilhouette, descriptor.width, descriptor.height);
+                //cmd.GetTemporaryRT(BlurOutline, descriptor.width, descriptor.height);
+
+                if (__renderBlurOutline.needDepthSort)
+                {
+                    ConfigureTarget(__solidSilhouette, renderingData.cameraData.renderer.cameraDepthTargetHandle);
+
+                    ConfigureClear(ClearFlag.Color, Color.clear);
+                }
+                else
+                {
+                    ConfigureTarget(__solidSilhouette);
+
+                    ConfigureClear(ClearFlag.All, Color.clear);
+                }
+            }
 
             // Here you can implement the rendering logic.
             // Use <c>ScriptableRenderContext</c> to issue drawing commands or execute command buffers
