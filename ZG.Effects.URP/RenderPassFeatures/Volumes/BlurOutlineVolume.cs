@@ -52,7 +52,7 @@ namespace ZG
             context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
         }
 
-        protected override void OnEnable()
+        /*protected override void OnEnable()
         {
             base.OnEnable();
 
@@ -65,6 +65,6 @@ namespace ZG
                 IRenderBlurOutline.instance = null;
 
             base.OnDisable();
-        }
+        }*/
     }
 }

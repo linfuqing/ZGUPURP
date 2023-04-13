@@ -223,7 +223,7 @@ namespace ZG
         public override void Create()
         {
             if(__renderPass == null)
-                __renderPass = new RenderPass(solidColor/*, solidColorLinearBlendSkinning, solidColorComputeDeformation*/);
+                __renderPass = new RenderPass(solidColor, solidColorLinearBlendSkinning, solidColorComputeDeformation);
 
             // Configures where the render pass should be injected.
             __renderPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
