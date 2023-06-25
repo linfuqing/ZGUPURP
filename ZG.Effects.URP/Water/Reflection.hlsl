@@ -5,7 +5,7 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
 
 TEXTURE2D_X(_ReflectionTex);
-SAMPLER(sampler_LinearClamp);
+//SAMPLER(sampler_LinearClamp);
 
 half3 SampleReflectiveColor(float4 positionNDC, float sceneDepth)
 {
