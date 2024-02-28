@@ -1,9 +1,8 @@
 ﻿using UnityEditor;
+using UnityEngine.Rendering;
 
 public class ClipEditor : ShaderGUI
 {
-    private bool __isClip;
-
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         var invDist = FindProperty("_ClipInvDist", properties);
@@ -11,11 +10,12 @@ public class ClipEditor : ShaderGUI
         var farDivDist = FindProperty("_ClipFarDivDist", properties);
         var targetWeight = FindProperty("_ClipTargetWeight", properties, false);
 
-        __isClip = EditorGUILayout.BeginFoldoutHeaderGroup(__isClip, "Clip");
-        if (__isClip)
-        {
-            var material = (UnityEngine.Material)materialEditor.target;
+        var material = (UnityEngine.Material)materialEditor.target;
 
+        bool isClipOld = material.IsKeywordEnabled("_ALPHATEST_ON");
+        bool isClip = EditorGUILayout.BeginFoldoutHeaderGroup(isClipOld, "Clip");
+        if (isClip)
+        {
             bool isGlobal = material.IsKeywordEnabled("CLIP_GLOBAL");
             if(isGlobal != EditorGUILayout.Toggle("Global", isGlobal))
             {
@@ -50,6 +50,20 @@ public class ClipEditor : ShaderGUI
             farDivDist.floatValue = EditorGUILayout.FloatField("Far", farDivDist.floatValue * distance) * invDistance;
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+
+        if (isClip != isClipOld)
+        {
+            if (isClip)
+            {
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.renderQueue = (int)RenderQueue.AlphaTest;
+            }
+            else
+            {
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.renderQueue = (int)RenderQueue.Geometry;
+            }
+        }
 
         int propertyCount = 3;
         if (targetWeight != null)
