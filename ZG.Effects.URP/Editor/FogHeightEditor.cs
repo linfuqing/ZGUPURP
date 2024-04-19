@@ -30,6 +30,7 @@ public class FogHeightEditor : ShaderGUI
 
         if (isFogHeight)
         {
+            ++EditorGUI.indentLevel;
             Vector4 fogParams = fogHeightParams.vectorValue;
             float heightStart = 1 / fogParams.y,
                 heightEnd = fogParams.x * -heightStart,
@@ -55,6 +56,8 @@ public class FogHeightEditor : ShaderGUI
                 float height = 1.0f / (heightEnd - heightStart), distance = 1.0f / (distanceEnd - distanceStart);
                 fogHeightParams.vectorValue = new Vector4(heightEnd * height, -height, distanceEnd * distance, -distance);
             }
+            
+            --EditorGUI.indentLevel;
         }
         //EditorGUILayout.EndFoldoutHeaderGroup();
 

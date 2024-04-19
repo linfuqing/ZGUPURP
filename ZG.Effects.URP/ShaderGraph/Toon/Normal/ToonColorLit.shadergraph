@@ -7,6 +7,9 @@
             "m_Id": "2d7bed37e9e5417d93836856040667be"
         },
         {
+            "m_Id": "fecbc511888a4fcf93833070d335a837"
+        },
+        {
             "m_Id": "2bcbc6619ab443c8bf03be1a0844441f"
         },
         {
@@ -34,6 +37,9 @@
         },
         {
             "m_Id": "901b44c9d1374e6cb4face9bf4dd05fc"
+        },
+        {
+            "m_Id": "e836c1ebc5b2412dacbd3ddf758eb738"
         }
     ],
     "m_Dropdowns": [],
@@ -96,6 +102,9 @@
         },
         {
             "m_Id": "d558f1c9f3cc4167ba9745daa0896d14"
+        },
+        {
+            "m_Id": "cb8428388a844448af0eedfed20f8aec"
         }
     ],
     "m_GroupDatas": [],
@@ -253,6 +262,20 @@
                     "m_Id": "630e26b5c87d49f295001178f7411738"
                 },
                 "m_SlotId": -779887792
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "cb8428388a844448af0eedfed20f8aec"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "630e26b5c87d49f295001178f7411738"
+                },
+                "m_SlotId": -475957055
             }
         },
         {
@@ -763,6 +786,12 @@
         },
         {
             "m_Id": "2d7bed37e9e5417d93836856040667be"
+        },
+        {
+            "m_Id": "fecbc511888a4fcf93833070d335a837"
+        },
+        {
+            "m_Id": "e836c1ebc5b2412dacbd3ddf758eb738"
         }
     ]
 }
@@ -922,7 +951,7 @@
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
     "m_SupportsLODCrossFade": false,
-    "m_CustomEditorGUI": "",
+    "m_CustomEditorGUI": "FogHeightEditor",
     "m_SupportVFX": false
 }
 
@@ -1086,6 +1115,31 @@
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "66c362c7c3ba4b60b45664b37cbe7803",
+    "m_Id": 0,
+    "m_DisplayName": "FogHeightParams",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -1948,6 +2002,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "cb8428388a844448af0eedfed20f8aec",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -258.0000305175781,
+            "y": 516.0,
+            "width": 170.00003051757813,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "66c362c7c3ba4b60b45664b37cbe7803"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "fecbc511888a4fcf93833070d335a837"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.SampleTexture2DNode",
     "m_ObjectId": "d558f1c9f3cc4167ba9745daa0896d14",
     "m_Group": {
@@ -2069,6 +2159,31 @@
         "y": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.ShaderKeyword",
+    "m_ObjectId": "e836c1ebc5b2412dacbd3ddf758eb738",
+    "m_Guid": {
+        "m_GuidSerialized": "a8be359b-c3b7-4f79-91f8-3fd9e06d8e6d"
+    },
+    "m_Name": "_FOG_HEIGHT",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "_FOG_HEIGHT",
+    "m_DefaultReferenceName": "_FOG_HEIGHT",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": false,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_KeywordType": 0,
+    "m_KeywordDefinition": 0,
+    "m_KeywordScope": 0,
+    "m_KeywordStages": 2,
+    "m_Entries": [],
+    "m_Value": 0,
+    "m_IsEditable": true
 }
 
 {
@@ -2236,6 +2351,34 @@
         "w": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector4ShaderProperty",
+    "m_ObjectId": "fecbc511888a4fcf93833070d335a837",
+    "m_Guid": {
+        "m_GuidSerialized": "f2d9d7da-8cbb-419a-9a6f-21c8b9928016"
+    },
+    "m_Name": "FogHeightParams",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "FogHeightParams",
+    "m_DefaultReferenceName": "_FogHeightParams",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    }
 }
 
 {
