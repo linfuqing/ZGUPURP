@@ -29,13 +29,10 @@ namespace ZG
             private Material[] __silhouetteMaterials;
             private List<ShaderTagId> __shaderTagIds = new List<ShaderTagId>(4);
 
-            public RenderPass(params Shader[] silhouetteShaders)
+            public RenderPass(Material blurOutlineMaterial,  params Material[] silhouetteMaterials)
             {
-                int numSilhouettes = silhouetteShaders.Length;
-
-                __silhouetteMaterials = new Material[numSilhouettes];
-                for (int i = 0; i < numSilhouettes; ++i)
-                    __silhouetteMaterials[i] = new Material(silhouetteShaders[i]);
+                __blurOutlineMaterial = blurOutlineMaterial;
+                __silhouetteMaterials = silhouetteMaterials;
 
                 __shaderTagIds.Add(new ShaderTagId("SRPDefaultUnlit"));
                 __shaderTagIds.Add(new ShaderTagId("UniversalForward"));
@@ -138,8 +135,8 @@ namespace ZG
 
                     var data = __renderBlurOutline.data;
 
-                    if (__blurOutlineMaterial == null)
-                        __blurOutlineMaterial = new Material(Shader.Find("ZG/BlurOutlineURP"));
+                    /*if (__blurOutlineMaterial == null)
+                        __blurOutlineMaterial = new Material(Shader.Find("ZG/BlurOutlineURP"));*/
 
                     Blit(cmd, __solidSilhouette, __blurSilhouette, __blurOutlineMaterial, 0);
 
@@ -213,6 +210,7 @@ namespace ZG
             }*/
         }
 
+        public Shader blurOutline;
         public Shader solidColor;
         public Shader solidColorLinearBlendSkinning;
         public Shader solidColorComputeDeformation;
@@ -222,22 +220,29 @@ namespace ZG
         /// <inheritdoc/>
         public override void Create()
         {
-            if(__renderPass == null)
-                __renderPass = new RenderPass(solidColor, solidColorLinearBlendSkinning, solidColorComputeDeformation);
+            if(__renderPass == null && 
+               blurOutline != null && 
+               SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGB32))
+                __renderPass = new RenderPass(
+                    CoreUtils.CreateEngineMaterial(blurOutline), 
+                    CoreUtils.CreateEngineMaterial(solidColor), 
+                    CoreUtils.CreateEngineMaterial(solidColorLinearBlendSkinning), 
+                    CoreUtils.CreateEngineMaterial(solidColorComputeDeformation));
 
+            if(__renderPass != null)
             // Configures where the render pass should be injected.
-            __renderPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
+                __renderPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         }
 
         // Here you can inject one or multiple render passes in the renderer.
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
+            if (__renderPass == null)
+                return;
+            
             var renderBlurOutline = IRenderBlurOutline.instance;
             if (renderBlurOutline == null || !renderBlurOutline.isVail)
-                return;
-
-            if (!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGB32))
                 return;
 
             __renderPass.Init(renderBlurOutline);

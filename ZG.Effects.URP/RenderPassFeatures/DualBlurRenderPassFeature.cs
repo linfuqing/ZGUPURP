@@ -34,6 +34,11 @@ namespace ZG
 
             private DualBlurData __data;
 
+            public RenderPass(Material material)
+            {
+                __material = material;
+            }
+
             public void Init(in DualBlurData data)
             {
                 __data = data;
@@ -147,12 +152,17 @@ namespace ZG
             }*/
         }
 
+        public Shader shader;
+        
         private RenderPass __renderPass;
 
         /// <inheritdoc/>
         public override void Create()
         {
-            __renderPass = new RenderPass();
+            if (shader == null)
+                return;
+            
+            __renderPass = new RenderPass(CoreUtils.CreateEngineMaterial(shader));
 
             // Configures where the render pass should be injected.
             __renderPass.renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
@@ -162,6 +172,9 @@ namespace ZG
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
+            if (__renderPass == null)
+                return;
+            
             var volumeManager = VolumeManager.instance;
             var volume = volumeManager.IsComponentActiveInMask<DualBlurVolume>(renderingData.cameraData.volumeLayerMask) ?
                 volumeManager.stack.GetComponent<DualBlurVolume>() : null;

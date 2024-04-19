@@ -4,6 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - blurOutline: {fileID: 4800000, guid: 89fecc4bb98bd1e4295d92d85a563ae9, type: 3}
   - solidColor: {fileID: 4800000, guid: 86e72b6b9f5afaa458a18c8ded7132d9, type: 3}
   - solidColorLinearBlendSkinning: {fileID: 4800000, guid: 2b963955402649541b7ea045efb73647,
       type: 3}

@@ -38,6 +38,9 @@ public class CopyColorPassFeature : ScriptableRendererFeature
     /// <inheritdoc/>
     public override void Create()
     {
+        if (samplingShader == null || copyingShader == null)
+            return;
+        
         __renderPass = new RenderPass(
             RenderPassEvent.AfterRenderingTransparents + 1, 
             CoreUtils.CreateEngineMaterial(samplingShader),
@@ -48,6 +51,9 @@ public class CopyColorPassFeature : ScriptableRendererFeature
     // This method is called when setting up the renderer once per-camera.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
+        if (__renderPass == null)
+            return;
+        
         renderer.EnqueuePass(__renderPass);
     }
 }

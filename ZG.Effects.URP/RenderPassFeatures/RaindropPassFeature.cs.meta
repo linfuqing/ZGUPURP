@@ -3,7 +3,8 @@ guid: 108b71ed022ba494a98b40277d42da79
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - shader: {fileID: 4800000, guid: 35ec8bf8084f85942a0903a5530a072e, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

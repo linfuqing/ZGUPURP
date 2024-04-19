@@ -1350,6 +1350,9 @@
             "m_Id": "049bcf768dce43638ece1173fe621037"
         },
         {
+            "m_Id": "669ec42518534b0d8fb97944c05dcbee"
+        },
+        {
             "m_Id": "f70b3941daa24ef18a0c7772d59a4ddc"
         }
     ],
@@ -1377,7 +1380,8 @@
         "684c53a7-0cda-4c03-a6a9-4f8413be30fe",
         "b4eb9d5e-27e3-48c7-b07f-56002ba35a0f",
         "95bc6800-5a0e-4b1f-bf0c-10e6d69b6056",
-        "96f831eb-ae92-4192-b7bc-ccef22e6b807"
+        "96f831eb-ae92-4192-b7bc-ccef22e6b807",
+        "2221c8ef-09f5-46ee-8045-cae45bfca463"
     ],
     "m_PropertyIds": [
         -779887792,
@@ -1394,7 +1398,8 @@
         1580222664,
         -215980506,
         1859364199,
-        1058981356
+        1058981356,
+        -475957055
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -1446,6 +1451,31 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "669ec42518534b0d8fb97944c05dcbee",
+    "m_Id": -475957055,
+    "m_DisplayName": "FogHeightParams",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Vector4_13389fea6d004805a140a82cd3814a3e",
+    "m_StageCapability": 2,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -2773,7 +2803,7 @@
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "BaseMap",
     "m_DefaultReferenceName": "_BaseMap",
-    "m_OverrideReferenceName": "_BaseMap",
+    "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",

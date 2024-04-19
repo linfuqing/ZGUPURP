@@ -34,11 +34,11 @@ namespace ZG
             private RTHandle __raindropTex;
             private ProfilingSampler __profilingSampler = new ProfilingSampler("Raindrop");
 
-            public RenderPass()
+            public RenderPass(Material material)
             {
                 //__materialPropertyBlock = new MaterialPropertyBlock();
 
-                __material = new Material(Shader.Find("ZG/RaindropURP"));
+                __material = material;//Shader.Find("ZG/RaindropURP"));
 
             }
 
@@ -143,12 +143,17 @@ namespace ZG
             }*/
         }
 
+        public Shader shader;
+
         private RenderPass __renderPass;
 
         /// <inheritdoc/>
         public override void Create()
         {
-            __renderPass = new RenderPass();
+            if (shader == null)
+                return;
+            
+            __renderPass = new RenderPass(CoreUtils.CreateEngineMaterial(shader));
 
             // Configures where the render pass should be injected.
             __renderPass.renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing;
@@ -158,7 +163,7 @@ namespace ZG
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            if (!__renderPass.Init(renderingData.cameraData.volumeLayerMask))
+            if (__renderPass == null || !__renderPass.Init(renderingData.cameraData.volumeLayerMask))
                 return;
 
             //__renderPass.ConfigureInput(ScriptableRenderPassInput.Color);
