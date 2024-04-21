@@ -120,6 +120,9 @@
         },
         {
             "m_Id": "5097819e2e4a4b7daa9d9352b17d9659"
+        },
+        {
+            "m_Id": "abca2580a9f0470994c636a434c1c160"
         }
     ],
     "m_GroupDatas": [],
@@ -375,6 +378,20 @@
                     "m_Id": "630e26b5c87d49f295001178f7411738"
                 },
                 "m_SlotId": -704770606
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "abca2580a9f0470994c636a434c1c160"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "630e26b5c87d49f295001178f7411738"
+                },
+                "m_SlotId": -475957055
             }
         },
         {
@@ -1960,6 +1977,31 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "854280760f0342419e62e3134c2e9240",
+    "m_Id": 0,
+    "m_DisplayName": "FogHeightParams",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
+}
+
+{
     "m_SGVersion": 1,
     "m_Type": "UnityEditor.ShaderGraph.Internal.Vector4ShaderProperty",
     "m_ObjectId": "870c31b2a3614697997f376562c53173",
@@ -2494,6 +2536,42 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "abca2580a9f0470994c636a434c1c160",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -480.00006103515627,
+            "y": 536.0,
+            "width": 170.00003051757813,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "854280760f0342419e62e3134c2e9240"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "870c31b2a3614697997f376562c53173"
+    }
 }
 
 {
