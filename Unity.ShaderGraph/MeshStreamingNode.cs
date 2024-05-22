@@ -68,14 +68,14 @@ namespace UnityEditor.ShaderGraph
 
         public override void CollectShaderProperties(PropertyCollector properties, GenerationMode generationMode)
         {
-            properties.AddShaderProperty(new Vector1ShaderProperty()
+            properties.AddShaderProperty(new Vector4ShaderProperty()
             {
                 displayName = "Mesh Streaming Vertex Offset",
                 overrideReferenceName = "_MeshStreamingVertexOffset",
                 overrideHLSLDeclaration = true,
                 hlslDeclarationOverride = HLSLDeclaration.HybridPerInstance,
                 hidden = true,
-                value = 0
+                value = default
             });
 
             base.CollectShaderProperties(properties, generationMode);
@@ -129,7 +129,10 @@ namespace UnityEditor.ShaderGraph
                 sb.AppendLine("{");
                 using (sb.IndentScope())
                 {
-                    sb.AppendLine("const MeshStreamingVertex vertex = _MeshStreamingVertexData[asuint(UNITY_ACCESS_HYBRID_INSTANCED_PROP(_MeshStreamingVertexOffset, float)) + vertexID];");
+                    //sb.AppendLine("const uint vertexIndex = asuint(UNITY_ACCESS_HYBRID_INSTANCED_PROP(_MeshStreamingVertexOffset, float));");
+                    sb.AppendLine("const uint4 vertexIndices = asuint(UNITY_ACCESS_HYBRID_INSTANCED_PROP(_MeshStreamingVertexOffset, float4));");
+                    sb.AppendLine("const uint vertexIndex = (vertexIndices.x << 0) | (vertexIndices.y << 8) | (vertexIndices.z << 16) | (vertexIndices.w << 24);");
+                    sb.AppendLine("const MeshStreamingVertex vertex = _MeshStreamingVertexData[vertexIndex + vertexID];");
                     sb.AppendLine("$precision3 cameraPositionOS = TransformWorldToObject(_WorldSpaceCameraPos.xyz);");
                     sb.AppendLine("positionOut = lerp(cameraPositionOS, vertex.position.xyz, vertex.position.w);");
                     //sb.AppendLine("positionOut = vertex.position.xyz;");
