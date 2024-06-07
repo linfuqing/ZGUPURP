@@ -111,11 +111,11 @@ namespace UnityEditor.ShaderGraph
                 using (sb.IndentScope())
                 {
                     sb.AppendLine("float4 position;");
-                    sb.AppendLine("float3 normal;");
+                    sb.AppendLine("float4 normal;");
                     //sb.AppendLine("float4 tangent;");
                 }
                 sb.AppendLine("};");
-                sb.AppendLine("uniform StructuredBuffer<MeshStreamingVertex> _MeshStreamingVertexData : register(t1);");
+                sb.AppendLine("uniform StructuredBuffer<MeshStreamingVertex> _MeshStreamingVertexData;"/* : register(t1)*/);
             });
 
             registry.ProvideFunction(GetFunctionName(), sb =>
@@ -136,7 +136,7 @@ namespace UnityEditor.ShaderGraph
                     sb.AppendLine("$precision3 cameraPositionOS = TransformWorldToObject(_WorldSpaceCameraPos.xyz);");
                     sb.AppendLine("positionOut = lerp(cameraPositionOS, vertex.position.xyz, vertex.position.w);");
                     //sb.AppendLine("positionOut = vertex.position.xyz;");
-                    sb.AppendLine("normalOut = vertex.normal;");
+                    sb.AppendLine("normalOut = vertex.normal.xyz;");
                     //sb.AppendLine("tangentOut = vertex.tangent.xyz;");
                 }
                 sb.AppendLine("}");
