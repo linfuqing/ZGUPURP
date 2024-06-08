@@ -362,6 +362,7 @@
     "m_OutputNode": {
         "m_Id": ""
     },
+    "m_SubDatas": [],
     "m_ActiveTargets": [
         {
             "m_Id": "58a5ecd7199b41deb6584840175dfc77"
@@ -1901,7 +1902,7 @@
         }
     ],
     "synonyms": [],
-    "m_Precision": 2,
+    "m_Precision": 0,
     "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
@@ -1929,7 +1930,7 @@
     "m_UseCustomSlotLabel": false,
     "m_CustomSlotLabel": "",
     "m_DismissedVersion": 0,
-    "m_Precision": 2,
+    "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 3,
     "m_Hidden": false,
