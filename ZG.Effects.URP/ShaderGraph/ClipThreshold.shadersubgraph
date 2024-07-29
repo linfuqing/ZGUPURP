@@ -499,6 +499,7 @@
     "m_OutputNode": {
         "m_Id": "7511fe9d6070402b9e0a1737863352f6"
     },
+    "m_SubDatas": [],
     "m_ActiveTargets": []
 }
 
@@ -1955,7 +1956,7 @@
     "m_KeywordType": 0,
     "m_KeywordDefinition": 1,
     "m_KeywordScope": 0,
-    "m_KeywordStages": 63,
+    "m_KeywordStages": 2,
     "m_Entries": [],
     "m_Value": 0,
     "m_IsEditable": true
@@ -2129,7 +2130,7 @@
     "m_KeywordType": 0,
     "m_KeywordDefinition": 0,
     "m_KeywordScope": 0,
-    "m_KeywordStages": 63,
+    "m_KeywordStages": 2,
     "m_Entries": [],
     "m_Value": 1,
     "m_IsEditable": true

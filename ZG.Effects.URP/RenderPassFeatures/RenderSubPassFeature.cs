@@ -12,6 +12,8 @@ namespace ZG
         private class RenderPass : ScriptableRenderPass
         {
             //private ProfilingSampler __profilingSampler;
+
+            internal bool _isUseRenderPass;
             
             private SynchronisationStageFlags __stage;
             
@@ -100,7 +102,8 @@ namespace ZG
                             ref __filteringSettings,
                             ref __renderStateBlock);
                         
-                        NextSubPass(this, context);
+                        if(_isUseRenderPass)
+                            NextSubPass(this, context);
                     }
 
                     /*var fence = Graphics.CreateGraphicsFence(
@@ -146,8 +149,9 @@ namespace ZG
         // This method is called when setting up the renderer once per-camera.
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            if(IsRenderPass(renderer, __renderPass, ref renderingData))
-                renderer.EnqueuePass(__renderPass);
+            __renderPass._isUseRenderPass = IsRenderPass(renderer, __renderPass, ref renderingData);
+
+            renderer.EnqueuePass(__renderPass);
         }
     }
 
