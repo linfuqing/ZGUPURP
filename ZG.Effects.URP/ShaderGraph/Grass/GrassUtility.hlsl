@@ -176,7 +176,7 @@ float3 CalculateWorldDistance(
 
 	distanceWS += ObstacleCalcalateWorldDistance(heightRate * obstacleStrength, position);
 
-	normalWS = heightRate > 0.0f ? SafeNormalize(distanceWS) : float3(0.0f, 1.0f, 0.0f);
+	normalWS = SafeNormalize(distanceWS);//heightRate > 0.0f ? SafeNormalize(distanceWS) : float3(0.0f, 1.0f, 0.0f);
 
 	return normalWS * height;
 }
